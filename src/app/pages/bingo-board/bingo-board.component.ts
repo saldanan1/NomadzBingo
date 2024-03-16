@@ -25,6 +25,7 @@ export class BingoBoardComponent implements OnInit{
   }
 
   cellSelected(cell: SheetCell){
+    console.log(cell)
     this.selectedCell = this.selectedCell !== cell ? cell : null
   }
 
