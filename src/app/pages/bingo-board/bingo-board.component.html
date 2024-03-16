@@ -1,1 +1,25 @@
-<p>bingo-board works!</p>
+<div style="display: flex; flex-direction: row">
+<div style="display: flex; flex-direction: row; flex-wrap: wrap; width: 55%; margin: 12px; justify-content: space-evenly">
+  @for (cell of sheetCells; track cell.task){
+      <div class="card" style="width: 14rem; min-height: 12rem; margin: 12px">
+        <button type="button" class="btn btn-light" style="height: 100%" (click)="cellSelected(cell)">
+          <div class="card-body">
+            <h5 class="card-title">{{ cell.task }}</h5>
+            <h6 class="card-subtitle mb-2 text-body-secondary">{{ cell.team_1_status }} {{ cell.team_2_status }} {{ cell.team_3_status }}</h6>
+            <p class="card-text">{{ cell.notes }}</p>
+            <a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
+          </div>
+        </button>
+      </div>
+  }
+</div>
+
+@if(selectedCell){
+  <div > {{this.selectedCell?.task}}</div>
+}
+</div>
+
+
+
+<!--contextual progress bars?-->

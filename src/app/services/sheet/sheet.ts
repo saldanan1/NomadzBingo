@@ -14,7 +14,7 @@ export class SheetCell {
   }
 
   public static sheetFromRecord(sheetRecord: any): SheetCell {
-    let sheet: SheetCell = new SheetCell(sheetRecord[0], sheetRecord[1], sheetRecord[2], sheetRecord[3], sheetRecord[4]);
+    let sheet: SheetCell = new SheetCell(sheetRecord[0].v, sheetRecord[1].v, sheetRecord[2].v, sheetRecord[3].v, sheetRecord[4].v ? sheetRecord[4].v : '');
     return sheet;
   }
 }
