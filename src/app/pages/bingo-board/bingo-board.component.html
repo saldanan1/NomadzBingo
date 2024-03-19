@@ -1,28 +1,83 @@
+<nav id="navbar-example2" class="navbar bg-body-tertiary px-3 mb-3">
+  <a class="navbar-brand" href="#">Nomadz Bingo</a>
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link" href="#scrollspyHeading1">Bingo Tiles</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#scrollspyHeading2">Progress per Team</a>
+    </li>
+  </ul>
+</nav>
 <div style="display: flex; flex-direction: row">
-<div style="display: flex; flex-direction: row; flex-wrap: wrap; width: 55%; margin: 12px; justify-content: space-evenly">
-  @for (cell of sheetCells; track cell.task){
-      <div class="card" style="width: 14rem; min-height: 12rem; margin: 12px">
-        <button type="button" class="btn btn-light" style="height: 100%" (click)="cellSelected(cell)">
-          <div class="card-body">
-            <h5 class="card-title">{{ cell.task }}</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">{{ cell.team_1_status }} {{ cell.team_2_status }} {{ cell.team_3_status }}</h6>
-            <p class="card-text">{{ cell.notes }}</p>
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
-          </div>
-        </button>
+  <div id="scrollspyHeading1" [ngStyle]="{'width': this.selectedCell ? '55%' : '100%'}" style="display: flex; flex-flow: wrap; justify-content: space-evenly; height: 100vh; overflow: auto;">
+    @for (cell of sheetCells; track cell.task){
+        <div class="card" style="width: 14rem; min-height: 12rem; margin: 12px">
+          <button type="button" class="btn btn-light" style="height: 100%" (click)="cellSelected(cell)">
+            <div class="card-body">
+              <h5 class="card-title">{{ cell.task }}</h5>
+              @if (cell.team_1_status == 'Y'){
+                <span style="margin: 3px" class="badge text-bg-primary">Team 1</span>
+              }
+              @if (cell.team_2_status == 'Y'){
+                <span style="margin: 3px" class="badge text-bg-success">Team 2</span>
+              }
+              @if (cell.team_3_status == 'Y'){
+                <span style="margin: 3px" class="badge text-bg-warning">Team 3</span>
+              }
+            </div>
+          </button>
+        </div>
+    }
+
+  </div>
+  @if(selectedCell){
+    <div class="card" style="flex: 1; margin: 12px;">
+      <div class="card-body" style="display: flex;flex-direction: column;justify-content: space-between;">
+        <div>
+          <h2 class="card-title">{{ this.selectedCell?.task }}</h2>
+          <p class="card-text">{{ this.selectedCell?.notes }}</p>
+        </div>
+        <div>
+          <h6> Completed by:</h6>
+          @if (this.selectedCell?.team_1_status == 'Y'){
+            <span style="margin: 3px" class="badge text-bg-primary">Team 1</span>
+          }
+          @if (this.selectedCell?.team_2_status == 'Y'){
+            <span style="margin: 3px" class="badge text-bg-success">Team 2</span>
+          }
+          @if (this.selectedCell?.team_3_status == 'Y'){
+            <span style="margin: 3px" class="badge text-bg-warning">Team 3</span>
+          }
+        </div>
       </div>
+    </div>
+
   }
-
+</div>
+<div>
+  <h2 style="margin: 24px" id="scrollspyHeading2">Progress per Team</h2>
+  <div style="margin: 48px">
+    <h6> Team 1 Completed Tasks</h6>
+    <div style="margin: 24px" class="progress" role="progressbar" aria-label="team 1" attr.aria-valuenow="{{getTeamProgressValue(TeamNames.team_1)}}" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar bg-primary" [ngStyle]="{'width': getTeamProgressValue(TeamNames.team_1)+'%' }">{{getTeamProgressValue(TeamNames.team_1)}}%</div>
+    </div>
+    <h6> Team 2 Completed Tasks</h6>
+    <div style="margin: 24px" class="progress" role="progressbar" aria-label="team 2" attr.aria-valuenow="{{getTeamProgressValue(TeamNames.team_2)}}" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar bg-success" [ngStyle]="{'width': getTeamProgressValue(TeamNames.team_2)+'%' }">{{getTeamProgressValue(TeamNames.team_2)}}%</div>
+    </div>
+    <h6> Team 3 Completed Tasks</h6>
+    <div style="margin: 24px" class="progress" role="progressbar" aria-label="team 3" attr.aria-valuenow="{{getTeamProgressValue(TeamNames.team_3)}}" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar bg-warning" [ngStyle]="{'width': getTeamProgressValue(TeamNames.team_3)+'%' }">{{getTeamProgressValue(TeamNames.team_3)}}%</div>
+    </div>
+  </div>
 </div>
 
-@if(selectedCell){
-  <div > {{this.selectedCell?.task}}</div>
-}
+<div class="chart-container" style="margin: 48px;">
+  @if (isBrowser){
+    <canvas #canvas id="teamTotalPointsChart">{{ chart }}</canvas>
+  }
 </div>
 
-<div> TEST</div>
 
 
-
-<!--contextual progress bars?-->
